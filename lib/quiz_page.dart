@@ -30,6 +30,8 @@ class _QuizPageState extends State<QuizPage> {
   int timeLeft = 15; // 15 seconds per question
   Timer? timer;
 
+  List<String> shuffledOptions = [];
+
   final List<Question> questions = [
     Question(
       questionText: 'Which programming language does Flutter use?',
@@ -66,7 +68,13 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
     super.initState();
+    shuffleOptions(); // Shuffle first question
     startTimer();
+  }
+
+  void shuffleOptions() {
+    shuffledOptions = List.from(questions[currentQuestionIndex].options);
+    shuffledOptions.shuffle();
   }
 
   void startTimer() {
@@ -88,7 +96,12 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       selectedAnswerIndex = selectedIndex;
       answered = true;
-      if (selectedIndex == questions[currentQuestionIndex].correctOptionIndex) {
+
+      final correctIndex = questions[currentQuestionIndex].correctOptionIndex;
+      final correctAnswerText =
+          questions[currentQuestionIndex].options[correctIndex];
+      if (selectedIndex >= 0 &&
+          shuffledOptions[selectedIndex] == correctAnswerText) {
         score++;
       }
       timer?.cancel();
@@ -100,6 +113,7 @@ class _QuizPageState extends State<QuizPage> {
           currentQuestionIndex++;
           answered = false;
           selectedAnswerIndex = -1;
+          shuffleOptions();
           startTimer();
         } else {
           showDialog(
@@ -135,6 +149,7 @@ class _QuizPageState extends State<QuizPage> {
                           score = 0;
                           answered = false;
                           selectedAnswerIndex = -1;
+                          shuffleOptions();
                           startTimer();
                         });
                       },
@@ -157,12 +172,11 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     final question = questions[currentQuestionIndex];
+
     return Scaffold(
       body: Center(
         child: Container(
-          constraints: const BoxConstraints(
-            maxWidth: 600,
-          ), // Max width for aesthetics
+          constraints: const BoxConstraints(maxWidth: 600),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.blueAccent, Colors.lightBlueAccent],
@@ -209,17 +223,21 @@ class _QuizPageState extends State<QuizPage> {
               const SizedBox(height: 30),
 
               // Options
-              ...List.generate(
-                question.options.length,
-                (index) => Padding(
+              ...List.generate(shuffledOptions.length, (index) {
+                final optionText = shuffledOptions[index];
+                final correctAnswerText =
+                    question.options[question.correctOptionIndex];
+                final isCorrect = optionText == correctAnswerText;
+
+                return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: MouseRegion(
-                    cursor: SystemMouseCursors.click, // <-- cursor pointer
+                    cursor: SystemMouseCursors.click,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             answered
-                                ? (index == question.correctOptionIndex
+                                ? (isCorrect
                                     ? Colors.green
                                     : (index == selectedAnswerIndex
                                         ? Colors.red
@@ -234,13 +252,13 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                       onPressed: () => answerQuestion(index),
                       child: Text(
-                        question.options[index],
+                        optionText,
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         ),
