@@ -1,4 +1,4 @@
-About This Project
+#About This Project
 
 This Quiz App is a small but interactive Flutter application I built to showcase modern UI/UX design and basic state management skills. The idea was to go beyond tutorials and create something that feels like a real, user-facing product. Users can answer multiple-choice questions, get instant feedback with colors, and see their results at the end with motivational emojis. Each attempt is different because the answer options are shuffled, making the quiz dynamic and engaging.
 
