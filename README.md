@@ -4,7 +4,7 @@ This Quiz App is a small but interactive Flutter application I built to showcase
 
 I designed the app with both mobile and web users in mind, focusing on a responsive layout with a gradient background, card-based questions, rounded buttons, and hover effects for web. The goal was to demonstrate how small apps can still feel polished, interactive, and professional.
 
-# Why I Built This
+## Why I Built This
 
 I wanted to explore several key aspects of building interactive apps:
 
@@ -18,7 +18,7 @@ Understanding how to make a small app feel like a complete, real-world product
 
 Even though it’s a simple quiz, I focused on clean code, reusability, and a professional look, which are essential skills for real projects.
 
-# Features
+## Features
 
 5-question multiple-choice quiz
 
@@ -34,13 +34,13 @@ Responsive design with maximum content width for readability
 
 Web-friendly cursor pointer and interactive buttons
 
-# Screenshots
+## Screenshots
 
 ![Quiz Main](screenshots/quiz_main.png)
 ![Feedback](screenshots/quiz_feedback.png)
 ![Result Screen](screenshots/quiz_result.png)
 
-# What I Learned
+## What I Learned
 
 How to structure a Flutter app with stateful widgets and dynamic UI
 
